@@ -176,7 +176,7 @@ public class NotificationManagerService extends INotificationManager.Stub
     private static final String ATTR_VERSION = "version";
     private static final String ATTR_HALO_POLICY_IS_BLACK = "policy_is_black";
 
-	private static final String TAG_ALLOWED_PKGS = "allowed-packages";
+    private static final String TAG_ALLOWED_PKGS = "allowed-packages";
     private static final String TAG_BLOCKED_PKGS = "blocked-packages";
     private static final String TAG_PACKAGE = "package";
     private static final String ATTR_NAME = "name";
@@ -224,7 +224,6 @@ public class NotificationManagerService extends INotificationManager.Stub
         }
         return result;
     }
-    
     private void loadBlockDb() {
         synchronized(mBlockedPackages) {
             if (mPolicyFile == null) {
@@ -234,7 +233,6 @@ public class NotificationManagerService extends INotificationManager.Stub
             }
         }
     }
-    
     private synchronized void loadHaloBlockDb() {
         if (mHaloPolicyFile == null) {
             mHaloPolicyFile = new AtomicFile(new File("/data/system", "halo_policy.xml"));
@@ -802,7 +800,7 @@ public class NotificationManagerService extends INotificationManager.Stub
         mToastQueue = new ArrayList<ToastRecord>();
         mHandler = new WorkerHandler();
 
-		loadBlockDb();
+        loadBlockDb();
         loadHaloBlockDb();
 
         mStatusBar = statusBar;

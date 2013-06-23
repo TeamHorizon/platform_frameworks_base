@@ -2540,7 +2540,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     @Override
     protected void tick(IBinder key, StatusBarNotification n, boolean firstTime) {
-		// no ticking in lights-out mode, except if halo is active
+        // no ticking in lights-out mode, except if halo is active
         if (!areLightsOn() && !mHaloActive) return;
 
         // no ticking in Setup
@@ -2584,6 +2584,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (!mHaloActive) {
                 mStatusBarContents.setVisibility(View.VISIBLE);
                 mCenterClockLayout.setVisibility(View.VISIBLE);
+
                 mTickerView.setVisibility(View.GONE);
                 mStatusBarContents.startAnimation(loadAnim(com.android.internal.R.anim.push_down_in, null));
                 mTickerView.startAnimation(loadAnim(com.android.internal.R.anim.push_down_out,

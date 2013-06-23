@@ -72,8 +72,9 @@ import com.android.internal.util.MemInfoReader;
 
 import java.util.ArrayList;
 
-public class RecentsPanelView extends FrameLayout implements OnItemClickListener, RecentsCallback,
-        StatusBarPanel, Animator.AnimatorListener {
+public class RecentsPanelView extends FrameLayout implements OnItemClickListener, 
+             RecentsCallback, StatusBarPanel, Animator.AnimatorListener {
+
     static final String TAG = "RecentsPanelView";
     static final boolean DEBUG = TabletStatusBar.DEBUG || PhoneStatusBar.DEBUG || false;
     private PopupMenu mPopup;
@@ -146,7 +147,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         boolean loadedThumbnailAndIcon;
     }
 
-    /* package */ final class TaskDescriptionAdapter extends BaseAdapter {
+/* package */ final class TaskDescriptionAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
         public TaskDescriptionAdapter(Context context) {
@@ -815,17 +816,28 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                     } else {
                         throw new IllegalStateException("Oops, no tag on view " + selectedView);
                     }
+		} else if (item.getItemId() == R.id.recent_launch_floating) {
+			ViewHolder viewHolder = (ViewHolder) selectedView.getTag();
+			if (viewHolder != null) {
+				final TaskDescription ad = viewHolder.taskDescription;
+				Intent intent = ad.intent;
+				intent.addFlags(Intent.FLAG_FLOATING_WINDOW
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				dismissAndGoBack();
+				getContext().startActivity(intent);
+				}
                 } else {
                     return false;
                 }
                 return true;
-            }
+	    }
         });
         popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
             public void onDismiss(PopupMenu menu) {
                 thumbnailView.setSelected(false);
                 mPopup = null;
             }
+	
         });
         popup.show();
     }
