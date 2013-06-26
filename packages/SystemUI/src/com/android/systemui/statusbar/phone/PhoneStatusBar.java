@@ -358,7 +358,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             // double-check to avoid races
             if (mStatusBarContents.getAlpha() == 0) {
                 if (DEBUG) Slog.d(TAG, "makeIconsInvisible");
-                mStatusBarContents.setVisibility(View.INVISIBLE);
+                mStatusBarContents.setVisibility(View.GONE);
             }
         }
     };
