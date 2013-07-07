@@ -2957,6 +2957,12 @@ public final class Settings {
          *  @hide
          */
         public static final String USER_UI_MODE = "user_ui_mode";
+        
+        /**
+         * Hybrid enabled, should default to 0 (Hybrid settings are disabled)
+         * @hide
+         */
+        public static final String HYBRID_ENABLED = "ui_enabled";
 
         /**
          * User configurable flag for determining if NavBar is enabled
