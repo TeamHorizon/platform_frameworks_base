@@ -60,8 +60,9 @@ import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.DelegateViewHelper;
 import com.android.systemui.statusbar.policy.KeyButtonView;
 import com.android.systemui.statusbar.policy.key.ExtensibleKeyButtonView;
+import com.android.systemui.recent.RecentsActivity.NavigationCallback;
 
-public class NavigationBarView extends LinearLayout {
+public class NavigationBarView extends LinearLayout implements NavigationCallback{
     final static boolean DEBUG = false;
     final static String TAG = "PhoneStatusBar/NavigationBarView";
 
@@ -88,9 +89,11 @@ public class NavigationBarView extends LinearLayout {
     boolean mHidden, mLowProfile, mShowMenu;
     int mDisabledFlags = 0;
     int mNavigationIconHints = 0;
-	private Drawable mBackIcon, mBackAltIcon;
     private boolean mMenuArrowKeys;
     private boolean mColorAllIcons;
+    private Drawable mBackIcon, mBackLandIcon, mBackAltIcon, mBackAltLandIcon,
+            mRecentsIcon, mRecentsLandIcon, mRecentsAltIcon, mRecentsAltLandIcon;
+
     
     public DelegateViewHelper mDelegateHelper;
     private BaseStatusBar mBar;
@@ -500,6 +503,11 @@ public class NavigationBarView extends LinearLayout {
         setDisabledFlags(mDisabledFlags, true);
     }
 
+    @Override
+    public int getNavigationIconHints() {
+        return mNavigationIconHints;
+    }
+
     View.OnTouchListener mLightsOutListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent ev) {
@@ -523,6 +531,11 @@ public class NavigationBarView extends LinearLayout {
     }
 
     public void setNavigationIconHints(int hints, boolean force) {
+        setNavigationIconHints(NavigationCallback.NAVBAR_BACK_HINT, hints, force);
+    }
+
+    @Override
+    public void setNavigationIconHints(int button, int hints, boolean force) {
         if (!force && hints == mNavigationIconHints) return;
 
         if (DEBUG) {
@@ -532,21 +545,38 @@ public class NavigationBarView extends LinearLayout {
         }
 
         mNavigationIconHints = hints;
-		// We can't guarantee users will set these buttons as targets
-        if (getBackButton() != null) {
-            getBackButton().setAlpha((0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_NOP)) ? 0.5f : 1.0f);
+
+        getHomeButton().setAlpha(
+            (0 != (hints & StatusBarManager.NAVIGATION_HINT_HOME_NOP)) ? 0.5f : 1.0f);
+
+        View back = getBackButton();
+        if(back != null) {
+            back.setAlpha(
+                (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_NOP)) ? 0.5f : 1.0f);
+        }
+
+        View recent = getRecentsButton();
+        if (recent != null) {
+            recent.setAlpha(
+                (0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_NOP)) ? 0.5f : 1.0f);
+        }
+
+        if (button == NavigationCallback.NAVBAR_BACK_HINT) {
             ((ImageView)getBackButton()).setImageDrawable(
-                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
-                    ? (mBackAltIcon)
-                    : (mBackIcon));
+                (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
+                    ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
+                    : (mVertical ? mBackLandIcon : mBackIcon));
+        } else if (button == NavigationCallback.NAVBAR_RECENTS_HINT) {
+            if (recent != null) {
+                ((ImageView)recent).setImageDrawable(
+                    (0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_ALT))
+                        ? (mVertical ? mRecentsAltLandIcon : mRecentsAltIcon)
+                        : (mVertical ? mRecentsLandIcon : mRecentsIcon));
+            }
         }
-        if (getHomeButton()!=null) {
-            getHomeButton().setAlpha((0 != (hints & StatusBarManager.NAVIGATION_HINT_HOME_NOP)) ? 0.5f : 1.0f);
-        }
-        if (getRecentsButton()!=null) {
-            getRecentsButton().setAlpha((0 != (hints & StatusBarManager.NAVIGATION_HINT_RECENT_NOP)) ? 0.5f : 1.0f);
-        }
+
         updateMenuArrowKeys();
+	setDisabledFlags(mDisabledFlags,true);
     }
 
     public void setDisabledFlags(int disabledFlags) {

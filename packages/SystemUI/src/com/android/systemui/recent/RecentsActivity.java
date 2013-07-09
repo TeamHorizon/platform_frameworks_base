@@ -18,6 +18,7 @@ package com.android.systemui.recent;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.StatusBarManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,10 +31,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.android.systemui.R;
+import com.android.systemui.statusbar.NavigationBarView;
 import com.android.systemui.statusbar.tablet.StatusBarPanel;
 
 import java.util.List;
-
+import java.util.ArrayList;
 public class RecentsActivity extends Activity {
     public static final String TOGGLE_RECENTS_INTENT = "com.android.systemui.recent.action.TOGGLE_RECENTS";
     public static final String PRELOAD_INTENT = "com.android.systemui.recent.action.PRELOAD";
@@ -44,10 +46,23 @@ public class RecentsActivity extends Activity {
     public static final String WAITING_FOR_WINDOW_ANIMATION_PARAM = "com.android.systemui.recent.WAITING_FOR_WINDOW_ANIMATION";
     private static final String WAS_SHOWING = "was_showing";
 
+private static ArrayList<NavigationCallback>sNavigationCallbacks
+            = new ArrayList<NavigationCallback>();
+
     private RecentsPanelView mRecentsPanel;
     private IntentFilter mIntentFilter;
     private boolean mShowing;
     private boolean mForeground;
+    protected boolean mBackPressed;
+
+    public interface NavigationCallback {
+        public final static int NAVBAR_BACK_HINT = 0;
+        public final static int NAVBAR_RECENTS_HINT = 1;
+
+        public abstract void setNavigationIconHints(int button, int hints, boolean force);
+        public abstract int getNavigationIconHints();
+    };
+
 
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
@@ -117,6 +132,19 @@ public class RecentsActivity extends Activity {
         return WallpaperManager.getInstance(context).getWallpaperInfo() != null;
     }
 
+    public void setRecentHints(boolean show) {
+        // Check if we need to enable alternate drawable for recent apps key
+        // on all the stored navigation callbacks
+        for(NavigationCallback callback : sNavigationCallbacks) {
+            if(callback == null) break; // FIXME: Add multiuser support
+            int navigationHints = callback.getNavigationIconHints();
+            callback.setNavigationIconHints(NavigationBarView.NAVBAR_RECENTS_HINT,
+                    show ? (navigationHints | StatusBarManager.NAVIGATION_HINT_RECENT_ALT)
+                    : (navigationHints & ~StatusBarManager.NAVIGATION_HINT_RECENT_ALT), true);
+        }
+    }
+
+
     @Override
     public void onStart() {
         // Hide wallpaper if it's not a static image
@@ -140,7 +168,12 @@ public class RecentsActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        dismissAndGoBack();
+        mBackPressed = true;
+        try {
+            dismissAndGoBack();
+        } finally {
+            mBackPressed = false;
+        }
     }
 
     public void dismissAndGoHome() {
@@ -164,6 +197,7 @@ public class RecentsActivity extends Activity {
                             ActivityManager.RECENT_IGNORE_UNAVAILABLE);
             if (recentTasks.size() > 1 &&
                     mRecentsPanel.simulateClick(recentTasks.get(1).persistentId)) {
+                finish();
                 // recents panel will take care of calling show(false) through simulateClick
                 return;
             }

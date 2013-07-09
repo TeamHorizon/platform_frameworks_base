@@ -91,23 +91,31 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 >
-                <include layout="@layout/signal_cluster_view" 
+		
+		<include layout="@layout/traffic_cluster_view"
+			android:id="@+id/traffic_cluster"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>	
+                <include layout="@layout/signal_cluster_view"
                     android:id="@+id/signal_cluster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     />
-				<include layout="@layout/signal_cluster_view_alt"
-                	android:id="@+id/signal_cluster_alt"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:visibility="gone"
+                <include layout="@layout/signal_cluster_view_alt"
+                        android:id="@+id/signal_cluster_alt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                 />
                 <include layout="@layout/battery_cluster_view"
                     android:id="@+id/battery_cluster"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    />
+
+                android:layout_width="wrap_content"
+                />
             </LinearLayout>
+
     
             <com.android.systemui.statusbar.policy.Clock
                 android:id="@+id/clock"
