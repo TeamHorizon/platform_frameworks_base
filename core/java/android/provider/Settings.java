@@ -2676,6 +2676,12 @@ public final class Settings {
         public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
         
         /**
+         * HALO size fraction, default is 1.0f (normal)
+         * @hide
+         */
+        public static final String HALO_SIZE = "halo_size";
+
+        /**
          * @hide
          */
         public static final String SYSTEM_POWER_ENABLE_CRT_OFF = "system_power_enable_crt_off";
