@@ -422,11 +422,13 @@
     <string-array name="reboot_options">
         <item>@string/reboot</item>
         <item>@string/reboot_recovery</item>
+        <item>@string/reboot_download</item>
     </string-array>
 
     <!-- reboot values -->
     <string-array name="reboot_values">
         <item></item>
         <item>recovery</item>
+        <item>bootloader</item>
     </string-array>
 </resources>
