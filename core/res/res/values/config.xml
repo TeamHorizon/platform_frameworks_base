@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
 ** Copyright 2009, The Android Open Source Project
@@ -2457,6 +2457,7 @@
          kill the foreground app. -->
     <integer name="config_backKillTimeout">2000</integer>
 
+<<<<<<< HEAD
 	<!-- The BT name of the keyboard packaged with the device. If this is defined, SystemUI will
          automatically try to pair with it when the device exits tablet mode. -->
     <string translatable="false" name="config_packagedKeyboardName"></string>
@@ -2470,4 +2471,7 @@
         <item>-98</item>
         <item>-44</item>
     </integer-array>
+
+    <!-- Boolean to enable stk functionality on Samsung phones -->
+    <bool name="config_samsung_stk">false</bool>
 </resources>
