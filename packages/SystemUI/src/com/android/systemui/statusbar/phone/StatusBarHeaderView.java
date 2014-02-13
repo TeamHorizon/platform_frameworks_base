@@ -38,6 +38,7 @@ import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.MathUtils;
 import android.util.TypedValue;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -533,6 +534,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
                 mActivityStarter.startPendingIntentDismissingKeyguard(showIntent);
             }
         }
+        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
     }
 
     private void startSettingsActivity() {
