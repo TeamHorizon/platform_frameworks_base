@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,6 +117,7 @@ public class QSPanel extends ViewGroup {
                 announceForAccessibility(
                         mContext.getString(R.string.accessibility_desc_quick_settings));
                 closeDetail();
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         });
     }
@@ -313,18 +315,21 @@ public class QSPanel extends ViewGroup {
             @Override
             public void onClick(View v) {
                 r.tile.click();
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         };
         final View.OnClickListener clickSecondary = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 r.tile.secondaryClick();
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         };
         final View.OnLongClickListener longClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 r.tile.longClick();
+                performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 return true;
             }
         };
@@ -396,6 +401,7 @@ public class QSPanel extends ViewGroup {
                 @Override
                 public void onClick(View v) {
                     mHost.startActivityDismissingKeyguard(settingsIntent);
+                    performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
             });
 
