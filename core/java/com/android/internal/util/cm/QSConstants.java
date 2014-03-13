@@ -54,6 +54,7 @@ public class QSConstants {
     public static final String TILE_EXPANDED_DESKTOP = "expanded_desktop";
     public static final String TILE_REBOOT = "reboot";
     public static final String TILE_HEADS_UP = "heads_up";
+    //public static final String TILE_ONTHEGO = "toggleOnTheGo";
 
     protected static final ArrayList<String> TILES_AVAILABLE = new ArrayList<String>();
 
