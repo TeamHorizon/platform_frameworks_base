@@ -54,6 +54,8 @@ public class KeyguardStatusView extends GridLayout {
     //Set initial value to false to skip the above case.
     private boolean mEnableRefresh = false;
 
+    private boolean mEnableRefresh;
+
     private KeyguardUpdateMonitorCallback mInfoCallback = new KeyguardUpdateMonitorCallback() {
 
         @Override
