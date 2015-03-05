@@ -3153,65 +3153,6 @@ public final class Settings {
         public static final String GESTURES_DOUBLE_TAP = "gestures_double_tap";
 
         /**
-        *
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_BUTTONS = "navigation_bar_buttons";
-
-        /**
-        * @hide
-        */
-        public static final String SOFTKEY_LONG_PRESS_CONFIGURATION = "softkey_long_press_configuration";
-
-        /**
-        * Alternate navigation bar layouts
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_ALTERNATE_LAYOUTS = "navigation_bar_alternate_layouts";
-
-        /**
-        * Alternate layout 2
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_BUTTONS_TWO = "navigation_bar_buttons_two";
-
-        /**
-        * Alternate layout 3
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_BUTTONS_THREE = "navigation_bar_buttons_three";
-
-        /**
-        * Alternate layout 4
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_BUTTONS_FOUR = "navigation_bar_buttons_four";
-
-        /**
-        * Alternate layout 5
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_BUTTONS_FIVE = "navigation_bar_buttons_five";
-
-        /**
-        * Allow navigation bar side keys
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_SIDEKEYS = "navigation_bar_sidekeys";
-
-        /**
-        * Allow navigation bar IME arrow keys
-        * @hide
-        */
-        public static final String NAVIGATION_BAR_ARROWS = "navigation_bar_arrows";
-
-        /**
-        * Button layout for IME arrows
-        * @hide
-        */
-        public static final String NAVIGATION_IME_LAYOUT = "navigation_ime_layout";
-
-        /**
         * Toggle for navigation ring
         * @hide
         */

@@ -3384,11 +3384,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     }
 
-    @Override
-    public void sendHomeAction() {
-        launchHomeFromHotKey();
-    }
-
     /**
      * A home key -> launch home action was detected.  Take the appropriate action
      * given the situation with the keyguard.
