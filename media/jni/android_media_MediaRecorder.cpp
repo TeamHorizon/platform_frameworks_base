@@ -41,7 +41,6 @@
 #include <system/audio.h>
 #include <android_runtime/android_view_Surface.h>
 #include <media/AVMediaExtensions.h>
-#include "SeempLog.h"
 // ----------------------------------------------------------------------------
 
 using namespace android;
