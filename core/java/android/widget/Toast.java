@@ -21,9 +21,11 @@ import android.annotation.StringRes;
 import android.app.INotificationManager;
 import android.app.ITransientNotification;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -402,17 +404,15 @@ public class Toast {
                 }
 
                 ImageView appIcon = (ImageView) mView.findViewById(android.R.id.icon);
-                if ((Settings.System.getInt(context.getContentResolver(), Settings.System.TOAST_ICON, 1) == 1)) {
-                    if (appIcon != null) {
-                        PackageManager pm = context.getPackageManager();
-                        Drawable icon = null;
-                        try {
-                            icon = pm.getApplicationIcon(packageName);
-                        } catch (PackageManager.NameNotFoundException e) {
-                            // nothing to do
-                        }
-                        appIcon.setImageDrawable(icon);
+                if (appIcon != null) {
+                    PackageManager pm = context.getPackageManager();
+                    Drawable icon = null;
+                    try {
+                        icon = pm.getApplicationIcon(packageName);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        // nothing to do
                     }
+                    appIcon.setImageDrawable(icon);
                 }
                 mWM = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
                 // We can resolve the Gravity here by using the Locale for getting
