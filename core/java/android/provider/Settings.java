@@ -3730,12 +3730,11 @@ public final class Settings {
         public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
 
         /**
-         * Volume rocker wake
          * @hide
          */
         public static final String VOLUME_ROCKER_WAKE = "volume_rocker_wake";
 
-		/**
+	/**
         * Navigation bar height when it is on protrait
         * @hide
         */
@@ -3813,6 +3812,12 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_CARRIER_COLOR = "status_bar_carrier_color";
+
+        /**
+         * Toast icon
+         * @hide
+         */
+        public static final String TOAST_ICON = "toast_icon";
 
         /**
          * Switch for headset icon
