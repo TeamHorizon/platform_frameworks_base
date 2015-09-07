@@ -4848,7 +4848,8 @@ public class PackageManagerService extends IPackageManager.Stub {
                     ai = null;
                 }
                 mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
-
+                mPolicy.setIconPackageName((String) pkg.packageName);
+		Log.i("BOOTPACKAGE","Package name is " + pkg.packageName);
                 ActivityManagerNative.getDefault().showBootMessage(
                         mContext.getResources().getString(R.string.android_upgrading_apk,
                                 curr, total), true);

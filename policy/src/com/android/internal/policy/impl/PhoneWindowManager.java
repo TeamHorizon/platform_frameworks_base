@@ -40,6 +40,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
+import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.hardware.input.InputManager;
@@ -6808,12 +6809,21 @@ public class PhoneWindowManager implements WindowManagerPolicy {
      * as shown through this.showBootMessage(msg, always);
      */
     static String currentPackageName;
+    static Drawable currentPackageIcon;
+    static String currentIconPackageName;
     public void setPackageName(String pkgName) {
         if (pkgName == null) {
             pkgName = "stop.looking.at.me.swan";
         }
         this.currentPackageName = pkgName;
     }
+    public void setIconPackageName(String pkgName) {
+	if (pkgName == null) {
+	    pkgName = "stop.looking.at.me.swan";
+	}
+	this.currentIconPackageName = pkgName;
+    }
+
 
     /** {@inheritDoc} */
     @Override
@@ -6860,6 +6870,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     } else {
                         mBootMsgDialog.setTitle(R.string.android_start_title);
                     }
+
                     mBootMsgDialog.getWindow().setType(
                             WindowManager.LayoutParams.TYPE_BOOT_PROGRESS);
                     mBootMsgDialog.getWindow().addFlags(
@@ -6871,16 +6882,25 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.getWindow().setAttributes(lp);
                     mBootMsgDialog.setCancelable(false);
                     mBootMsgDialog.setMessage("");
+		    mBootMsgDialog.setIcon(R.drawable.ic_dialog_info);
                     mBootMsgDialog.show();
                 }
 
                 // Only display the current package name if the main message says "Optimizing app N of M".
                 // We don't want to do this when the message says "Starting apps" or "Finishing boot", etc.
-                if (always && (currentPackageName != null)) {
+                if (always && (currentIconPackageName != null) && (currentPackageName != null)) {
 
                     // Calculate random text color
                     Random rand = new Random();
                     String randomColor = Integer.toHexString(rand.nextInt(0xFFFFFF) & 0xFCFCFC );
+                    try {
+                        currentPackageIcon = mContext.getPackageManager().getApplicationIcon(currentIconPackageName);
+                    } catch (PackageManager.NameNotFoundException e) {
+                    // Ignore
+		    Log.i("PACKAGEICON", "Icon Name not found - " + currentIconPackageName);
+                    }
+
+		    mBootMsgDialog.setIcon(currentPackageIcon);
                     mBootMsgDialog.setMessage(Html.fromHtml(msg +
                                                             "<br><b><font color=\"#" + randomColor + "\">" +
                                                             currentPackageName +
