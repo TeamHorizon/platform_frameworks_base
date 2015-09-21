@@ -3759,6 +3759,14 @@ public final class Settings {
         */
        public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
 
+        /**
+         * Whether to use default custom header or poly hd
+         * 0 = default
+         * 1 = poly hd
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER_DEFAULT = "status_bar_custom_header_default";
+
        /**
         * Network traffic inactivity threshold (default is 10 kBs)
         * @hide
