@@ -126,6 +126,53 @@ public class KeyButtonView extends ImageView {
         return super.performAccessibilityActionInternal(action, arguments);
     }
 
+    public void setEditMode(boolean editMode) {
+        mInEditMode = editMode;
+        updateVisibility();
+    }
+
+    public void setInfo(NavbarEditor.ButtonInfo item, boolean isVertical, boolean isSmall) {
+        final Resources res = getResources();
+        final int keyDrawableResId;
+
+        setTag(item);
+        setContentDescription(res.getString(item.contentDescription));
+        mCode = item.keyCode;
+        mIsSmall = isSmall;
+
+        if (isSmall) {
+            keyDrawableResId = item.sideResource;
+        } else if (!isVertical) {
+            keyDrawableResId = item.portResource;
+        } else {
+            keyDrawableResId = item.landResource;
+        }
+        // The reason for setImageDrawable vs setImageResource is because setImageResource calls
+        // relayout() w/o any checks. setImageDrawable performs size checks and only calls relayout
+        // if necessary. We rely on this because otherwise the setX/setY attributes which are post
+        // layout cause it to mess up the layout.
+        setImageDrawable(res.getDrawable(keyDrawableResId));
+        updateVisibility();
+    }
+
+    private void updateVisibility() {
+        if (mInEditMode) {
+            setVisibility(View.VISIBLE);
+            return;
+        }
+
+        NavbarEditor.ButtonInfo info = (NavbarEditor.ButtonInfo) getTag();
+        if (info == NavbarEditor.NAVBAR_EMPTY) {
+            setVisibility(mIsSmall ? View.INVISIBLE : View.GONE);
+        } else if (info == NavbarEditor.NAVBAR_CONDITIONAL_MENU) {
+            setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private boolean supportsLongPress() {
+        return mSupportsLongpress;
+    }
+
     public boolean onTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         int x, y;

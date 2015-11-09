@@ -1224,14 +1224,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private void prepareNavigationBarView() {
         mNavigationBarView.reorient();
 
-        mNavigationBarView.getRecentsButton().setOnClickListener(mRecentsClickListener);
-        mNavigationBarView.getRecentsButton().setOnTouchListener(mRecentsPreloadOnTouchListener);
-        mNavigationBarView.getRecentsButton().setLongClickable(true);
-        mNavigationBarView.getRecentsButton().setOnLongClickListener(mLongPressBackRecentsListener);
-        mNavigationBarView.getBackButton().setLongClickable(true);
-        mNavigationBarView.getBackButton().setOnLongClickListener(mLongPressBackRecentsListener);
-        mNavigationBarView.getHomeButton().setOnTouchListener(mHomeActionListener);
-        mNavigationBarView.getHomeButton().setOnLongClickListener(mLongPressHomeListener);
+        mNavigationBarView.setListeners(mRecentsClickListener, mRecentsPreloadOnTouchListener,
+                mLongPressBackRecentsListener, mHomeActionListener, mLongPressHomeListener);
         mAssistManager.onConfigurationChanged();
     }
 

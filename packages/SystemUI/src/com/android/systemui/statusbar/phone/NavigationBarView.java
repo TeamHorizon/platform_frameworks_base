@@ -89,6 +89,20 @@ public class NavigationBarView extends LinearLayout {
     final static boolean WORKAROUND_INVALID_LAYOUT = true;
     final static int MSG_CHECK_INVALID_LAYOUT = 8686;
 
+    final static String NAVBAR_EDIT_ACTION = "android.intent.action.NAVBAR_EDIT";
+
+    private boolean mInEditMode;
+    private NavbarEditor mEditBar;
+    private NavBarReceiver mNavBarReceiver;
+    private OnClickListener mRecentsClickListener;
+    private OnTouchListener mRecentsPreloadListener;
+    private OnTouchListener mHomeSearchActionListener;
+    private OnLongClickListener mRecentsBackListener;
+    private OnLongClickListener mLongPressHomeListener;
+
+    private SettingsObserver mSettingsObserver;
+    private boolean mShowDpadArrowKeys;
+
     // performs manual animation in sync with layout transitions
     private final NavTransitionListener mTransitionListener = new NavTransitionListener();
 
@@ -700,5 +714,142 @@ public class NavigationBarView extends LinearLayout {
 
     public interface OnVerticalChangedListener {
         void onVerticalChanged(boolean isVertical);
+    }
+
+    void setListeners(OnClickListener recentsClickListener, OnTouchListener recentsPreloadListener,
+                      OnLongClickListener recentsBackListener, OnTouchListener homeSearchActionListener,
+                      OnLongClickListener longPressHomeListener) {
+        mRecentsClickListener = recentsClickListener;
+        mRecentsPreloadListener = recentsPreloadListener;
+        mHomeSearchActionListener = homeSearchActionListener;
+        mRecentsBackListener = recentsBackListener;
+        mLongPressHomeListener = longPressHomeListener;
+        updateButtonListeners();
+    }
+
+    private void removeButtonListeners() {
+        ViewGroup container = (ViewGroup) mCurrentView.findViewById(R.id.container);
+        int viewCount = container.getChildCount();
+        for (int i = 0; i < viewCount; i++) {
+            View button = container.getChildAt(i);
+            if (button instanceof KeyButtonView) {
+                button.setOnClickListener(null);
+                button.setOnTouchListener(null);
+                button.setLongClickable(false);
+                button.setOnLongClickListener(null);
+            }
+        }
+    }
+
+    protected void updateButtonListeners() {
+        View recentView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_RECENT);
+        if (recentView != null) {
+            recentView.setOnClickListener(mRecentsClickListener);
+            recentView.setOnTouchListener(mRecentsPreloadListener);
+            recentView.setLongClickable(true);
+            recentView.setOnLongClickListener(mRecentsBackListener);
+        }
+        View backView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_BACK);
+        if (backView != null) {
+            backView.setLongClickable(true);
+            backView.setOnLongClickListener(mRecentsBackListener);
+        }
+        View homeView = mCurrentView.findViewWithTag(NavbarEditor.NAVBAR_HOME);
+        if (homeView != null) {
+            homeView.setOnTouchListener(mHomeSearchActionListener);
+            homeView.setLongClickable(true);
+            homeView.setOnLongClickListener(mLongPressHomeListener);
+        }
+    }
+
+    public boolean isInEditMode() {
+        return mInEditMode;
+    }
+
+    private void setButtonWithTagVisibility(Object tag, boolean visible) {
+        View findView = mCurrentView.findViewWithTag(tag);
+        if (findView == null) {
+            return;
+        }
+        int visibility = visible ? View.VISIBLE : View.INVISIBLE;
+        // if we're showing dpad arrow keys (e.g. the side button visibility where it's shown != -1)
+        // then don't actually update that buttons visibility, but update the stored value
+        if (getSideButtonVisibility(true) != -1
+                && findView.getId() == (mVertical ? R.id.six : R.id.one)) {
+            setSideButtonVisibility(true, visibility);
+        } else if (getSideButtonVisibility(false) != -1
+                && findView.getId() == (mVertical ? R.id.one : R.id.six)) {
+            setSideButtonVisibility(false, visibility);
+        } else {
+            findView.setVisibility(visibility);
+        }
+    }
+
+    // TODO LINK TO THIS ONCE THEMES GOES IN
+    protected void updateResources() {
+        getIcons(mContext.getResources());
+    }
+
+    public class NavBarReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean edit = intent.getBooleanExtra("edit", false);
+            boolean save = intent.getBooleanExtra("save", false);
+            if (edit != mInEditMode) {
+                mInEditMode = edit;
+                if (edit) {
+                    removeButtonListeners();
+                    mEditBar.setEditMode(true);
+                } else {
+                    if (save) {
+                        mEditBar.saveKeys();
+                    }
+                    mEditBar.setEditMode(false);
+                    updateSettings();
+                }
+            }
+        }
+    }
+
+    public void updateSettings() {
+        mEditBar.updateKeys();
+        removeButtonListeners();
+        updateButtonListeners();
+        setDisabledFlags(mDisabledFlags, true /* force */);
+        setMenuVisibility(mShowMenu, true);
+    }
+
+    private class SettingsObserver extends ContentObserver {
+
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS),
+                    false, this);
+
+            // intialize mModlockDisabled
+            onChange(false);
+        }
+
+        void unobserve() {
+            getContext().getContentResolver().unregisterContentObserver(this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            mShowDpadArrowKeys = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, 0) != 0;
+            // reset saved side button visibilities
+            for (int i = 0; i < mSideButtonVisibilities.length; i++) {
+                for (int j = 0; j < mSideButtonVisibilities[i].length; j++) {
+                    mSideButtonVisibilities[i][j] = -1;
+                }
+            }
+            setNavigationIconHints(mNavigationIconHints, true);
+        }
     }
 }
