@@ -19,7 +19,7 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="animation_fade">Угасание</string>
+  <string name="animation_fade">Затухание</string>
   <string name="animation_slide_right">Сдвиг вправо</string>
   <string name="animation_slide_left">Сдвиг влево</string>
   <string name="animation_slide_right_no_fade">Сдвиг вправо (без затухания)</string>
@@ -28,9 +28,11 @@
   <string name="animation_slide_down">Сдвиг вверх</string>
   <string name="animation_default">По умолчанию</string>
   <string name="animation_translucent">Прозрачное</string>
+  <string name="animation_grow_shrink">Увеличение (вверх)</string>
   <string name="animation_grow_shrink_center">Увеличение (центр)</string>
   <string name="animation_grow_shrink_bottom">Увеличение (низ)</string>
   <string name="animation_grow_shrink_left">Увеличение (слева)</string>
+  <string name="animation_grow_shrink_right">Увеличение (справа)</string>
   <string name="action_null">Пусто</string>
   <string name="default_string">По умолчанию</string>
   <string name="floating_window_snap_top">Закрепить верх</string>
@@ -39,7 +41,7 @@
   <string name="floating_window_snap_right">Закрепить право</string>
   <string name="floating_window_minimize">Уменьшить</string>
   <string name="setting_confirmation_ask_me_later">Спросить позже</string>
-  <string name="setting_confirmation_yes">да</string>
+  <string name="setting_confirmation_yes">Да</string>
   <string name="setting_confirmation_no">Нет</string>
   <string name="global_action_onthego">Режим \"На ходу\"</string>
 </resources>

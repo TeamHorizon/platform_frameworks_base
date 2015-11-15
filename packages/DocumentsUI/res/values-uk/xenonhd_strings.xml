@@ -15,9 +15,9 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="title_standalone">Файлы</string>
-  <string name="toast_success_delete">Файлы удалены</string>
-  <string name="dialog_delete_confirm_title">Удалить файлы?</string>
-  <string name="copy_in_progress">Копирование...</string>
-  <string name="delete_in_progress">Удаление...</string>
+  <string name="title_standalone">Файли</string>
+  <string name="toast_success_delete">Файли видалені</string>
+  <string name="dialog_delete_confirm_title">Видалити файли?</string>
+  <string name="copy_in_progress">Копіювання...</string>
+  <string name="delete_in_progress">Видалення...</string>
 </resources>

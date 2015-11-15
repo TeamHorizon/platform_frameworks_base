@@ -15,21 +15,21 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="title_standalone">Fichiers</string>
-  <string name="toast_success_delete">Fichiers supprimés</string>
-  <string name="dialog_delete_confirm_title">Supprimer les fichiers?</string>
+  <string name="title_standalone">Dosyalar</string>
+  <string name="toast_success_delete">Dosyalar silindi</string>
+  <string name="dialog_delete_confirm_title">Dosyalar silinsin mi?</string>
   <plurals name="files_copied">
-    <item quantity="one">Le fichier a été copié dans le presse-papier</item>
-    <item quantity="other">%d fichiers ont été copiés dans le presse-papier</item>
+    <item quantity="one">Dosya panoya kopyalandı</item>
+    <item quantity="other">%d dosya panoya kopyalandı</item>
   </plurals>
   <plurals name="files_pasted">
-    <item quantity="one">Le fichier a été collé. L\'opération peut se terminer en arrière plan.</item>
-    <item quantity="other">%d fichiers ont été collés. L\'opération peut se terminer en arrière plan.</item>
+    <item quantity="one">Dosya yapıştırıldı. Yükleme arka planda tamamlanabilir.</item>
+    <item quantity="other">%d dosya yapıştırıldı. Yükleme arka planda devam edebilir.</item>
   </plurals>
-  <string name="copy_in_progress">Copie...</string>
-  <string name="delete_in_progress">Suppression...</string>
+  <string name="copy_in_progress">Kopyalanıyor...</string>
+  <string name="delete_in_progress">Siliniyor...</string>
   <plurals name="dialog_delete_confirm_message">
-    <item quantity="one">Ce fichier sera définitivement supprimé!</item>
-    <item quantity="other">Cela supprimera définitivement les %d fichiers sélectionnés!</item>
+    <item quantity="one">Bu dosya kalıcı olarak silinecek!</item>
+    <item quantity="other">Bu seçili %d dosyayı kalıcı olarak silecek!</item>
   </plurals>
 </resources>
