@@ -597,7 +597,7 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
 
         Task t = mStack.getTasks().get(mFocusedTaskIndex);
         TaskView tv = getChildViewForTask(t);
-        tv.dismissTask();
+        tv.dismissTask(0L);
     }
 
     /** Resets the focused task. */
@@ -611,6 +611,50 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
         }
         mFocusedTaskIndex = -1;
         mPrevAccessibilityFocusedIndex = -1;
+    }
+
+    private boolean dismissAll() {
+        return Settings.System.getIntForUser(mContext.getContentResolver(),
+            Settings.System.RECENTS_CLEAR_ALL_DISMISS_ALL, 1, UserHandle.USER_CURRENT) == 1;
+    }
+
+    public void dismissAllTasks() {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Task> tasks = new ArrayList<Task>();
+                tasks.addAll(mStack.getTasks());
+                if (!dismissAll() && tasks.size() > 1) {
+                    // Ignore the visible foreground task
+                    Task foregroundTask = tasks.get(tasks.size() - 1);
+                    tasks.remove(foregroundTask);
+                }
+
+                // Remove visible TaskViews
+                long dismissDelay = 0;
+                int childCount = getChildCount();
+                int delay = mConfig.taskViewRemoveAnimDuration / childCount;
+                if (!dismissAll() && childCount > 1) childCount--;
+                for (int i = 0; i < childCount; i++) {
+                    TaskView tv = (TaskView) getChildAt(i);
+                    tasks.remove(tv.getTask());
+                    tv.dismissTask(dismissDelay);
+                    dismissDelay += delay;
+                }
+
+                int size = tasks.size();
+
+                if (size > 0) {
+                    // Remove possible alive Tasks
+                    for (int i = 0; i < size; i++) {
+                        Task t = tasks.get(i);
+                        if (mStack.getTasks().contains(t)) {
+                            mStack.removeTask(t);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -975,26 +1019,6 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
         }
     }
 
-    /** Requests this task stack to start it's dismiss-all animation. */
-    public void startDismissAllAnimation(final Runnable postAnimationRunnable) {
-        // Clear the focused task
-        resetFocusedTask();
-        // Animate the dismiss-all button
-        hideDismissAllButton(new Runnable() {
-            @Override
-            public void run() {
-                List<TaskView> taskViews = getTaskViews();
-                int taskViewCount = taskViews.size();
-                int count = 0;
-                for (int i = taskViewCount - 1; i >= 0; i--) {
-                    TaskView tv = taskViews.get(i);
-                    tv.startDeleteTaskAnimation(i > 0 ? null : postAnimationRunnable, count * 50);
-                    count++;
-                }
-            }
-        });
-    }
-
     /** Animates a task view in this stack as it launches. */
     public void startLaunchTaskAnimation(TaskView tv, Runnable r, boolean lockToTask) {
         Task launchTargetTask = tv.getTask();
@@ -1181,14 +1205,6 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
         // Announce for accessibility
         String msg = getContext().getString(R.string.accessibility_recents_all_items_dismissed);
         announceForAccessibility(msg);
-
-        startDismissAllAnimation(new Runnable() {
-            @Override
-            public void run() {
-                // Notify that all tasks have been removed
-                mCb.onAllTaskViewsDismissed(removedTasks);
-            }
-        });
     }
 
     @Override
@@ -1458,7 +1474,7 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                         public void run() {
                             mStack.removeTask(t);
                         }
-                    }, 0);
+                    }, 0L);
                 } else {
                     // Otherwise, remove the task from the stack immediately
                     mStack.removeTask(t);
