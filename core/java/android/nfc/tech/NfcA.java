@@ -70,7 +70,7 @@ public final class NfcA extends BasicTagTechnology {
         super(tag, TagTechnology.NFC_A);
         Bundle extras;
         mSak = 0;
-        if(tag.hasTech(TagTechnology.MIFARE_CLASSIC))
+        if(tag.hasTech(TagTechnology.MIFARE_CLASSIC) && tag.getTechExtras(TagTechnology.MIFARE_CLASSIC) != null)
         {
             extras = tag.getTechExtras(TagTechnology.MIFARE_CLASSIC);
             mSak = extras.getShort(EXTRA_SAK);
