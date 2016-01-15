@@ -538,12 +538,10 @@ public class DirectoryFragment extends Fragment {
 
             final boolean manageOrBrowse = (state.action == ACTION_MANAGE
                     || state.action == ACTION_BROWSE || state.action == ACTION_BROWSE_ALL);
-            final boolean stdMode = state.action == ACTION_STANDALONE;
 
-
-            open.setVisible(!manageOrBrowse && !stdMode);
-            share.setVisible(manageOrBrowse || stdMode);
-            delete.setVisible(manageOrBrowse || stdMode);
+            open.setVisible(!manageOrBrowse);
+            share.setVisible(manageOrBrowse);
+            delete.setVisible(manageOrBrowse);
             // Disable copying from the Recents view.
             copy.setVisible(manageOrBrowse && mType != TYPE_RECENT_OPEN);
 

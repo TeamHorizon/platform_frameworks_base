@@ -128,6 +128,7 @@ import com.android.internal.policy.IKeyguardService;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ScreenShapeHelper;
 import com.android.internal.widget.PointerLocationView;
+import com.android.internal.util.xenonhd.DimensionConverter;
 import com.android.server.am.ActivityStackSupervisor;
 import com.android.server.GestureLauncherService;
 import com.android.server.LocalServices;
