@@ -147,13 +147,20 @@ public class QSDragPanel extends QSPanel implements View.OnDragListener, View.On
                     Log.d(TAG, "instantiateItem() called with "
                             + "container = [" + container + "], position = [" + position + "]");
                 }
-                QSPage page = new QSPage(container.getContext(), QSDragPanel.this, position);
-                LayoutParams params =
-                        new LayoutParams(LayoutParams.MATCH_PARENT,
-                                LayoutParams.FILL_PARENT);
-                container.addView(page, params);
-                mPages.add(page);
-                return page;
+                if (mEditing && position == 0) {
+                    QSSettings qss = (QSSettings)
+                            View.inflate(container.getContext(), R.layout.qs_settings, null);
+                    qss.setHost(mHost);
+                    container.addView(qss, 0);
+                    return qss;
+                } else {
+                    final int adjustedPosition = mEditing ? position - 1 : position;
+                    QSPage page = mPages.get(adjustedPosition);
+                    if (!page.isAttachedToWindow()) {
+                        container.addView(page);
+                    }
+                    return page;
+                }
             }
 
             @Override
