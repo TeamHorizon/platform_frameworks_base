@@ -71,7 +71,10 @@ public class EditTile extends QSTile<QSTile.BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        state.visible = !getHost().getKeyguardMonitor().isShowing();
+        final boolean showing = getHost().getKeyguardMonitor().isShowing();
+        final boolean secure = getHost().getKeyguardMonitor().isSecure();
+        state.visible = !showing || !secure;
+        state.enabled = !showing;
         state.label = mContext.getString(R.string.quick_settings_edit_label);
 
         if (arg instanceof Boolean) {
