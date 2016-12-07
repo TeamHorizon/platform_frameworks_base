@@ -974,7 +974,7 @@ public class AppOpsService extends IAppOpsService.Stub {
             return AppOpsManager.MODE_IGNORED;
         }
         synchronized (this) {
-            if (isOpRestricted(uid, code, resolvedPackageName)) {
+            if (isOpRestrictedLocked(uid, code, resolvedPackageName)) {
                 return AppOpsManager.MODE_IGNORED;
             }
             code = AppOpsManager.opToSwitch(code);
@@ -1124,7 +1124,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                 return AppOpsManager.MODE_ERRORED;
             }
             Op op = getOpLocked(ops, code, true);
-            if (isOpRestricted(uid, code, packageName)) {
+            if (isOpRestrictedLocked(uid, code, packageName)) {
                 op.ignoredCount++;
                 return AppOpsManager.MODE_IGNORED;
             }
@@ -1251,7 +1251,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                 return AppOpsManager.MODE_ERRORED;
             }
             Op op = getOpLocked(ops, code, true);
-            if (isOpRestricted(uid, code, resolvedPackageName)) {
+            if (isOpRestrictedLocked(uid, code, resolvedPackageName)) {
                 op.ignoredCount++;
                 return AppOpsManager.MODE_IGNORED;
             }
@@ -1510,7 +1510,7 @@ public class AppOpsService extends IAppOpsService.Stub {
         return op;
     }
 
-    private boolean isOpRestricted(int uid, int code, String packageName) {
+    private boolean isOpRestrictedLocked(int uid, int code, String packageName) {
         int userHandle = UserHandle.getUserId(uid);
         final int restrictionSetCount = mOpUserRestrictions.size();
 
@@ -2475,24 +2475,32 @@ public class AppOpsService extends IAppOpsService.Stub {
 
     private void setUserRestrictionNoCheck(int code, boolean restricted, IBinder token,
             int userHandle, String[] exceptionPackages) {
-        ClientRestrictionState restrictionState = mOpUserRestrictions.get(token);
+        boolean notifyChange = false;
 
-        if (restrictionState == null) {
-            try {
-                restrictionState = new ClientRestrictionState(token);
-            } catch (RemoteException e) {
-                return;
+        synchronized (AppOpsService.this) {
+            ClientRestrictionState restrictionState = mOpUserRestrictions.get(token);
+
+            if (restrictionState == null) {
+                try {
+                    restrictionState = new ClientRestrictionState(token);
+                } catch (RemoteException e) {
+                    return;
+                }
+                mOpUserRestrictions.put(token, restrictionState);
             }
-            mOpUserRestrictions.put(token, restrictionState);
+
+            if (restrictionState.setRestriction(code, restricted, exceptionPackages, userHandle)) {
+                notifyChange = true;
+            }
+
+            if (restrictionState.isDefault()) {
+                mOpUserRestrictions.remove(token);
+                restrictionState.destroy();
+            }
         }
 
-        if (restrictionState.setRestriction(code, restricted, exceptionPackages, userHandle)) {
+        if (notifyChange) {
             notifyWatchersOfChange(code);
-        }
-
-        if (restrictionState.isDefault()) {
-            mOpUserRestrictions.remove(token);
-            restrictionState.destroy();
         }
     }
 
@@ -2528,10 +2536,12 @@ public class AppOpsService extends IAppOpsService.Stub {
     @Override
     public void removeUser(int userHandle) throws RemoteException {
         checkSystemUid("removeUser");
-        final int tokenCount = mOpUserRestrictions.size();
-        for (int i = tokenCount - 1; i >= 0; i--) {
-            ClientRestrictionState opRestrictions = mOpUserRestrictions.valueAt(i);
-            opRestrictions.removeUser(userHandle);
+        synchronized (AppOpsService.this) {
+            final int tokenCount = mOpUserRestrictions.size();
+            for (int i = tokenCount - 1; i >= 0; i--) {
+                ClientRestrictionState opRestrictions = mOpUserRestrictions.valueAt(i);
+                opRestrictions.removeUser(userHandle);
+            }
         }
     }
 
