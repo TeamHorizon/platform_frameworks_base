@@ -24,9 +24,9 @@
   <string name="quick_settings_adb_network">Sieci ADB</string>
   <string name="quick_settings_network_adb_enabled_label">Włączone</string>
   <string name="quick_settings_network_adb_disabled_label">Wyłączone</string>
-  <string name="quick_settings_sync_label">Synchr.</string>
-  <string name="accessibility_quick_settings_sync_off">Synchr. wył</string>
-  <string name="accessibility_quick_settings_sync_on">Synchr. wł</string>
+  <string name="quick_settings_sync_label">Synchronizacja</string>
+  <string name="accessibility_quick_settings_sync_off">Synchronizacja wył</string>
+  <string name="accessibility_quick_settings_sync_on">Synchronizacja wł</string>
   <string name="accessibility_quick_settings_sync_changed_off">Synchronizacja wyłączona</string>
   <string name="accessibility_quick_settings_sync_changed_on">Synchronizacja włączona</string>
   <string name="quick_settings_reboot_label">Uruchom ponownie</string>
