@@ -37,12 +37,12 @@
   <string name="accessibility_quick_settings_usb_tether_changed_on">USB 網路共用已開啟</string>
   <string name="quick_settings_usb_tether_label">USB 網路共用</string>
   <string name="quick_settings_music_label">音樂</string>
-  <string name="quick_settings_music_play">播放</string>
+  <string name="quick_settings_music_play">開始</string>
   <string name="quick_settings_music_pause">暫停</string>
   <string name="quick_settings_ime_tile_label">輸入法</string>
   <string name="quick_settings_caffeine_label">咖啡因</string>
   <string name="accessibility_quick_settings_caffeine_off">關閉 咖啡因 。</string>
-  <string name="accessibility_quick_settings_caffeine_on">開啟 咖啡因。</string>
+  <string name="accessibility_quick_settings_caffeine_on">開啟 咖啡因</string>
   <string name="quick_settings_expanded_navigation_off">隱藏巡覽列</string>
   <string name="quick_settings_expanded_statusbar_off">隱藏狀態列</string>
   <string name="quick_settings_nfc_label">NFC</string>

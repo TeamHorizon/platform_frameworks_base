@@ -13,8 +13,18 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Screenshot Delete Toast -->
+  <string name="delete_screenshot_toast">تم حذف صورة الشاشة</string>
   <!-- Status bar items tuner -->
+  <string name="statusbar_icons_blacklist">أيقونات شريط الحالة</string>
   <!-- Quick Settings tiles -->
+  <string name="quick_settings_expanded_desktop_label">مكتب موسع</string>
+  <string name="quick_settings_expanded_desktop">موسع</string>
+  <string name="quick_settings_expanded_desktop_off">عادي</string>
+  <string name="quick_settings_screenshot_label">لقطة للشاشة</string>
+  <string name="quick_settings_adb_network">شبكة ADB</string>
+  <string name="quick_settings_network_adb_enabled_label">مفعل</string>
+  <string name="quick_settings_network_adb_disabled_label">غير مفعل</string>
+  <string name="quick_settings_sync_label">المزامنة</string>
   <!-- Text to use when the number in a notification info is too large
          (greater than status_bar_notification_info_maxnum, defined in
          values/config.xml) and must be truncated.

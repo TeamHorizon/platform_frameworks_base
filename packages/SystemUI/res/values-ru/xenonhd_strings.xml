@@ -19,7 +19,7 @@
   <!-- Quick Settings tiles -->
   <string name="quick_settings_expanded_desktop_label">Расширенный экран</string>
   <string name="quick_settings_expanded_desktop">Расширенный</string>
-  <string name="quick_settings_expanded_desktop_off">Обычный</string>
+  <string name="quick_settings_expanded_desktop_off">Нормальный</string>
   <string name="quick_settings_screenshot_label">Скриншот</string>
   <string name="quick_settings_adb_network">ADB по сети</string>
   <string name="quick_settings_network_adb_enabled_label">Включено</string>
